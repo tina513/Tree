@@ -1,26 +1,32 @@
 <div class="container">
   <mat-toolbar>Tree</mat-toolbar>
 
-  <mat-expansion-panel>
+  <mat-expansion-panel [formGroup]="createNodeForm">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Add new node in the Tree
       </mat-panel-title>
     </mat-expansion-panel-header>
     <mat-form-field>
-      <input matInput placeholder="Name" [(ngModel)]="newNode.name" required>
+      <input matInput placeholder="Name" formControlName="name" required>
+      <mat-error *ngIf="createNodeForm.get('name').hasError('required')">Name is required</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <!-- todo: validation for 15 -->
-      <input matInput type="number" max="15" placeholder="Count" [(ngModel)]="newNode.count" required>
+      <input type="number" matInput min="0" max="15" formControlName="count" placeholder="Count" required>
+      <mat-error *ngIf="createNodeForm.get('count').hasError('required')">Count is required</mat-error>
+      <mat-error *ngIf="createNodeForm.get('count').hasError('max')">Count should up to 15</mat-error>
+      <mat-error *ngIf="createNodeForm.get('count').hasError('min')">Count should be positive number</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="number" placeholder="Lower Bound" [(ngModel)]="newNode.lower" required>
+      <input type="number" matInput formControlName="lower" placeholder="Lower Bound" required>
+      <mat-error *ngIf="createNodeForm.get('lower').hasError('required')">Lower Bound is required</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="number" placeholder="Uper Bound" [(ngModel)]="newNode.higher" required>
+      <input type="number" matInput formControlName="higher" placeholder="Enter hight Bound" required>
+      <mat-error *ngIf="createNodeForm.get('higher').hasError('required')">Upper Bound is required</mat-error>
     </mat-form-field>
-    <button mat-button (click)="onCreateNode(newNode)">Create</button>
+    <mat-error *ngIf="createNodeForm.hasError('RangeError')">This range can't generate enough random numbers</mat-error>
+    <button mat-button (click)="onCreateNode()">Create</button>
   </mat-expansion-panel>
   <mat-divider></mat-divider>
   <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl"  class="example-tree">

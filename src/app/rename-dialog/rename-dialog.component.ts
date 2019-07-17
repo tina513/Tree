@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { FormControl, FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import * as io from 'socket.io-client';
 import { NodeService } from '../node.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -15,11 +16,18 @@ export interface RenameData {
 })
 export class RenameDialogComponent implements OnInit {
   socket;
+  renameDialog;
+
   constructor(
     public dialogRef: MatDialogRef<RenameDialogComponent>,
+    private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: RenameData, 
     private nodeService: NodeService) {
       this.socket = io();
+      this.renameDialog = fb.group({
+        id: data.id,
+        name: new FormControl(null, Validators.required)
+      });
     }
 
   ngOnInit() {
@@ -29,9 +37,11 @@ export class RenameDialogComponent implements OnInit {
       this.dialogRef.close();
   }
 
-  onRename(data) {
-      this.nodeService.renameNode(data, this.socket);
+  onRename() {
+    if(this.renameDialog.status === "VALID") {
+      this.nodeService.renameNode(this.renameDialog.value, this.socket);
       this.dialogRef.close();
+    }
   }
 
 }

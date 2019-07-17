@@ -1,10 +1,11 @@
 <h1 mat-dialog-title>Rename: {{data.name}}</h1>
-<div mat-dialog-content>
+<div mat-dialog-content [formGroup]="renameDialog">
     <mat-form-field class="example-full-width">
-        <input matInput placeholder="Rename the Node" [(ngModel)]="data.name" required>
+        <input matInput placeholder="Rename the Node" formControlName="name" required>
+        <mat-error *ngIf="renameDialog.get('name').hasError('required')">Name is required</mat-error>
     </mat-form-field>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="onRename(data)" cdkFocusInitial>Rename</button>
+  <button mat-button (click)="onRename()" cdkFocusInitial>Rename</button>
 </div>

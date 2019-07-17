@@ -1,5 +1,6 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { NodeService } from '../node.service';
 import * as io from 'socket.io-client';
 import { Node } from '../node';
@@ -7,6 +8,10 @@ import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { MatDialog } from '@angular/material/dialog';
 import { MainDialogComponent } from '../main-dialog/main-dialog.component';
 import { RenameDialogComponent } from '../rename-dialog/rename-dialog.component';
+
+function rangeMatcher(c: AbstractControl) {
+  return c.get('higher').value >= (c.get('lower').value + c.get('count').value) ? null : {'RangeError': true}
+}
 
 @Component({
   selector: 'app-nodes',
@@ -19,11 +24,18 @@ export class NodesComponent implements OnInit {
   nestedDataSource: MatTreeNestedDataSource<Node>;
   nodes: Node[];
   newNode: Node = {name: null, count: null, lower: null, higher: null, children: []};
+  createNodeForm: FormGroup;
 
-  constructor(private nodeService: NodeService, public dialog: MatDialog) { 
+  constructor(private nodeService: NodeService, public dialog: MatDialog, private fb: FormBuilder,) { 
     this.socket = io();
     this.nestedTreeControl = new NestedTreeControl<any>(node => node.children);
     this.nestedDataSource = new MatTreeNestedDataSource();
+    this.createNodeForm = fb.group({
+      name: new FormControl(null, Validators.required),
+      count: new FormControl(null, [Validators.required, Validators.max(15), Validators.min(0)]),
+      lower: new FormControl(null, Validators.required),
+      higher: new FormControl(null, Validators.required)
+    }, {validators: rangeMatcher});
   }
 
   ngOnInit() {
@@ -80,8 +92,10 @@ export class NodesComponent implements OnInit {
     });
   }
 
-  onCreateNode(newNode) {
-    this.nodeService.addNode(newNode, this.socket);
+  onCreateNode() {
+    if(this.createNodeForm.status === "VALID") {
+      this.nodeService.addNode(this.createNodeForm.value, this.socket);
+    }
   }
 
 }

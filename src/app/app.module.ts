@@ -7,7 +7,7 @@ import { NodesComponent } from './nodes/nodes.component';
 import { MainDialogComponent } from './main-dialog/main-dialog.component';
 import { RenameDialogComponent } from './rename-dialog/rename-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTreeModule, MatIconModule, MatButtonModule, MatListModule, MatChipsModule, MatDialogModule, MatInputModule, MatToolbarModule, MatExpansionModule, MatDividerModule } from '@angular/material';
 
 
@@ -26,6 +26,7 @@ import { MatTreeModule, MatIconModule, MatButtonModule, MatListModule, MatChipsM
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     MatTreeModule,
     MatIconModule,
