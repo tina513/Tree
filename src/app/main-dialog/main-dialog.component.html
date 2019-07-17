@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Edit Tree Node Info</h1>
+<div mat-dialog-content>
+    <mat-form-field class="example-full-width">
+        <input matInput placeholder="Enter Count" [(ngModel)]="data.count">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <input matInput placeholder="Enter Lower Bound" [(ngModel)]="data.lower">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <input matInput placeholder="Enter hight Bound" [(ngModel)]="data.higher">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onGenerate(data)" cdkFocusInitial>Generate</button>
+  <button mat-button (click)="onDelete(data.id)" cdkFocusInitial>Delete</button>
+</div>
