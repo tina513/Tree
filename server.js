@@ -7,7 +7,7 @@ const socketIO = require('socket.io');
 const nodeController = require('./controller');
 const Node = require('./dbmodel/node');
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const app = express();
 
