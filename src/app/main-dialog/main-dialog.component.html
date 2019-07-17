@@ -1,13 +1,13 @@
 <h1 mat-dialog-title>Edit Tree Node Info</h1>
 <div mat-dialog-content>
     <mat-form-field class="example-full-width">
-        <input matInput placeholder="Enter Count" [(ngModel)]="data.count">
+        <input matInput placeholder="Enter Count" [(ngModel)]="data.count" required>
     </mat-form-field>
     <mat-form-field class="example-full-width">
-        <input matInput placeholder="Enter Lower Bound" [(ngModel)]="data.lower">
+        <input matInput placeholder="Enter Lower Bound" [(ngModel)]="data.lower" required>
     </mat-form-field>
     <mat-form-field class="example-full-width">
-        <input matInput placeholder="Enter hight Bound" [(ngModel)]="data.higher">
+        <input matInput placeholder="Enter hight Bound" [(ngModel)]="data.higher" required>
     </mat-form-field>
 </div>
 <div mat-dialog-actions>

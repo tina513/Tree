@@ -12,3 +12,7 @@
 .chip{
   margin-left: 50px;
 }
+
+.icon-button {
+  cursor: pointer;
+}
