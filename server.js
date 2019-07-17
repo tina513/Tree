@@ -11,7 +11,7 @@ const port = 3000;
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/nodes')
+mongoose.connect('mongodb://tree:sockettree1@ds115035.mlab.com:15035/tree')
 .then(() => {
     console.log('Connected');
 });
