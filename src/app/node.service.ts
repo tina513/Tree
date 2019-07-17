@@ -11,7 +11,7 @@ export class NodeService {
   constructor(private http: HttpClient) { }
 
   getNodes(): Observable<Node[]>{
-    return this.http.get<Node[]>('http://localhost:3000/api/nodes');
+    return this.http.get<Node[]>('/api/nodes');
   }
 
   addNode(newNode, socket): void{
