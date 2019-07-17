@@ -1,9 +1,10 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { NodeService } from '../node.service';
 import * as io from 'socket.io-client';
 import { Node } from '../node';
+import { MatExpansionPanel } from '@angular/material/expansion';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { MatDialog } from '@angular/material/dialog';
 import { MainDialogComponent } from '../main-dialog/main-dialog.component';
@@ -22,9 +23,8 @@ export class NodesComponent implements OnInit {
   socket;
   nestedTreeControl: NestedTreeControl<Node>;
   nestedDataSource: MatTreeNestedDataSource<Node>;
-  nodes: Node[];
-  newNode: Node = {name: null, count: null, lower: null, higher: null, children: []};
   createNodeForm: FormGroup;
+  @ViewChild(MatExpansionPanel) matExpansionPanel: MatExpansionPanel;
 
   constructor(private nodeService: NodeService, public dialog: MatDialog, private fb: FormBuilder,) { 
     this.socket = io();
@@ -95,6 +95,7 @@ export class NodesComponent implements OnInit {
   onCreateNode() {
     if(this.createNodeForm.status === "VALID") {
       this.nodeService.addNode(this.createNodeForm.value, this.socket);
+      this.matExpansionPanel.close();
     }
   }
 
