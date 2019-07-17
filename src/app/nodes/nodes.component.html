@@ -12,8 +12,7 @@
     </mat-form-field>
     <mat-form-field>
       <!-- todo: validation for 15 -->
-      <input matInput type="number" max="15" placeholder="Count" name="nodeCount" [(ngModel)]="newNode.count">
-      <mat-error *ngIf="nodeCount?.invalid">Max Value: 15</mat-error>
+      <input matInput type="number" max="15" placeholder="Count" [(ngModel)]="newNode.count">
     </mat-form-field>
     <mat-form-field>
       <input matInput type="number" placeholder="Lower Bound" [(ngModel)]="newNode.lower">
