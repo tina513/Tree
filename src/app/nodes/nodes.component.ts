@@ -2,8 +2,9 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms';
 import { NodeService } from '../node.service';
+import { Router } from '@angular/router';
 import * as io from 'socket.io-client';
-import { Node } from '../node';
+import { Node } from '../models/node';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { MatDialog } from '@angular/material/dialog';
@@ -26,7 +27,7 @@ export class NodesComponent implements OnInit {
   createNodeForm: FormGroup;
   @ViewChild(MatExpansionPanel) matExpansionPanel: MatExpansionPanel;
 
-  constructor(private nodeService: NodeService, public dialog: MatDialog, private fb: FormBuilder,) { 
+  constructor(private nodeService: NodeService, public dialog: MatDialog, private fb: FormBuilder, private router: Router) { 
     this.socket = io();
     this.nestedTreeControl = new NestedTreeControl<any>(node => node.children);
     this.nestedDataSource = new MatTreeNestedDataSource();
@@ -97,6 +98,10 @@ export class NodesComponent implements OnInit {
       this.nodeService.addNode(this.createNodeForm.value, this.socket);
       this.matExpansionPanel.close();
     }
+  }
+
+  logOut(){
+    this.router.navigate(['']);
   }
 
 }

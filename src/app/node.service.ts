@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Node } from './node';
+import { Node } from './models/node';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,14 @@ import { Node } from './node';
 export class NodeService {
 
   constructor(private http: HttpClient) { }
+
+  signUp(newUser): Observable<any> {
+    return this.http.post('/api/signup', newUser);
+  }
+
+  logIn(user): Observable<any> {
+    return this.http.post('/api/login', user);
+  }
 
   getNodes(): Observable<Node[]>{
     return this.http.get<Node[]>('/api/nodes');
@@ -29,4 +37,5 @@ export class NodeService {
   deleteNode(id, socket){
     socket.emit('deleteNode', id);
   }
+
 }

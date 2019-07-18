@@ -1,11 +1,13 @@
 const express = require('express');
 const http = require('http');
+const jwt = require('jsonwebtoken');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
 const socketIO = require('socket.io');
 const nodeController = require('./controller');
 const Node = require('./dbmodel/node');
+const User = require('./dbmodel/user');
 const Joi = require('@hapi/joi');
 
 const port = process.env.PORT || 3000;
@@ -78,6 +80,46 @@ app.get('/api/nodes', (req, res)=>{
         res.send(nodes);
     })
 });
-  
+
+app.post('/api/signup', (req, res)=>{
+    const newUser = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password
+    });
+    newUser.save((err, user) => {
+        if(err){
+            let str = err.message.split('$')[1].split('_')[0];
+            res.status(401).send({error: `${str} already exist, please use a different one`});
+        }else{
+            res.send(user);
+        }
+    });
+});
+
+app.post('/api/login', (req, res)=>{
+    debugger;
+    User.findOne ({username: req.body.username}).exec((err, user) => {
+        if(err){
+            res.send({error: err});
+        }
+        if(!user){
+            res.status(401).send({error: "Username not found"});
+        }else{
+            if(user.password !== req.body.password){
+                res.status(401).send({error: "Password is incorrect"});
+            }else{
+                var token = jwt.sign({userID: user.id}, 'user-secret', {expiresIn: '2h'});
+                res.send({token});
+            }
+        }
+    });
+});
+
+app.get('/api/users', (req, res)=>{
+    User.find({}).then((users) => {
+        res.status(200).send(users);
+    })
+});
 
 server.listen(port);

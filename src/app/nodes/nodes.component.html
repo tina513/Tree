@@ -1,5 +1,9 @@
 <div class="container">
-  <mat-toolbar>Tree</mat-toolbar>
+  <mat-toolbar>
+    <span>Tree</span>
+    <span class="example-spacer"></span>
+    <button mat-raised-button color="warn" (click)="logOut()">Log Out</button>
+  </mat-toolbar>
 
   <mat-expansion-panel [formGroup]="createNodeForm" #matExpansionPanel>
     <mat-expansion-panel-header>

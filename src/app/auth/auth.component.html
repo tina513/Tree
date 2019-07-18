@@ -1,0 +1,39 @@
+<mat-tab-group>
+  <mat-tab label="Sign Up">
+    <form class="example-form" [formGroup]="signUpForm">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Username" formControlName="username" required>
+        <mat-error *ngIf="signUpForm.get('username').hasError('required')">Username is required</mat-error>
+      </mat-form-field>
+      
+      <!-- Todo: Email Validation -->
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Email" formControlName="email" required>
+        <mat-error *ngIf="signUpForm.get('email').hasError('required')">Email is required</mat-error>
+      </mat-form-field>
+    
+      <mat-form-field class="example-full-width">
+        <input type="password" matInput placeholder="Password" formControlName="password" required>
+        <mat-error *ngIf="signUpForm.get('password').hasError('required')">Password is required</mat-error>
+      </mat-form-field>
+      <mat-error *ngIf="customError.signUp">{{customError.signUp}}</mat-error>
+      <button mat-raised-button color="primary" (click)="signUp()">Sign Up</button>
+    </form>
+  </mat-tab>
+  <mat-tab label="Log In">
+    <form class="example-form" [formGroup]="logInForm">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Username" formControlName="username" required>
+        <mat-error *ngIf="logInForm.get('username').hasError('required')">Username is required</mat-error>
+      </mat-form-field>
+    
+      <mat-form-field class="example-full-width">
+        <input type="password" matInput placeholder="Password" formControlName="password" required>
+        <mat-error *ngIf="logInForm.get('password').hasError('required')">Password is required</mat-error>
+      </mat-form-field>
+      <mat-error *ngIf="customError.logIn">{{customError.logIn}}</mat-error>
+      <button mat-raised-button color="primary" (click)="logIn()">Log In</button>
+    </form>
+  </mat-tab>
+</mat-tab-group>
+
