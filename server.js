@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, '/dist/tree')));
 const nodeSchema = Joi.object().keys({
     id: Joi.string(),
     name: Joi.string().min(3).max(15),
-    count: Joi.number().max(15),
+    count: Joi.number().min(1).max(15),
     lower: Joi.number(),
     higher: Joi.number().greater(Joi.ref('lower'))
 });

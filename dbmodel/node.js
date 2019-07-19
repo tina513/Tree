@@ -1,10 +1,24 @@
 const mongoose = require('mongoose');
 
 const NodeSchema = mongoose.Schema({
-    name: String,
-    count: Number,
-    lower: Number,
-    higher: Number,
+    name: {
+        type: String,
+        required: true
+    },
+    count: {
+        type: Number, 
+        min: 1,
+        max: 15,
+        required: true
+    },
+    lower: {
+        type: Number,
+        required: true
+    },
+    higher: {
+        type: Number,
+        required: true
+    },
     children: []
 });
 

@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Regenerate Tree Node</h2>
 <mat-dialog-content class="mat-typography" [formGroup]="mainDialog">
     <mat-form-field class="example-full-width">
-        <input type="number" matInput min="0" max="15" formControlName="count" placeholder="Enter Count" required>
+        <input type="number" matInput min="1" max="15" formControlName="count" placeholder="Enter Count" required>
         <mat-error *ngIf="mainDialog.get('count').hasError('required')">Count is required</mat-error>
         <mat-error *ngIf="mainDialog.get('count').hasError('max')">Count should up to 15</mat-error>
         <mat-error *ngIf="mainDialog.get('count').hasError('min')">Count should be positive number</mat-error>
