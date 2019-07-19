@@ -32,7 +32,7 @@ export class MainDialogComponent implements OnInit {
       this.socket = io({query: {token: localStorage.getItem('access_token')}});
       this.mainDialog = fb.group({
         id: data.id,
-        count: new FormControl(null, [Validators.required, Validators.max(15), Validators.min(0)]),
+        count: new FormControl(null, [Validators.required, Validators.max(15), Validators.min(1)]),
         lower: new FormControl(null, Validators.required),
         higher: new FormControl(null, Validators.required)
       }, {validators: rangeMatcher});

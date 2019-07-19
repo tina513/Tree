@@ -33,7 +33,7 @@ export class NodesComponent implements OnInit {
     this.nestedDataSource = new MatTreeNestedDataSource();
     this.createNodeForm = fb.group({
       name: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(15)]),
-      count: new FormControl(null, [Validators.required, Validators.max(15), Validators.min(0)]),
+      count: new FormControl(null, [Validators.required, Validators.max(15), Validators.min(1)]),
       lower: new FormControl(null, Validators.required),
       higher: new FormControl(null, Validators.required)
     }, {validators: rangeMatcher});
