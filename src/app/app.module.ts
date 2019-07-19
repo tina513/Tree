@@ -66,6 +66,9 @@ export function tokenGetter() {
     MatDividerModule,
     MatTabsModule
   ],
+  exports: [
+    MatDialogModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

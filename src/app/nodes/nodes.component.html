@@ -12,8 +12,9 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <mat-form-field>
-      <input matInput placeholder="Name" formControlName="name" required>
+      <input matInput placeholder="Name" minlength="3"  maxlength="15" formControlName="name" required>
       <mat-error *ngIf="createNodeForm.get('name').hasError('required')">Name is required</mat-error>
+      <mat-error *ngIf="createNodeForm.get('name').hasError('minlength')">Name should be more than 3 charactor</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input type="number" matInput min="0" max="15" formControlName="count" placeholder="Count" required>
@@ -30,7 +31,9 @@
       <mat-error *ngIf="createNodeForm.get('higher').hasError('required')">Upper Bound is required</mat-error>
     </mat-form-field>
     <mat-error *ngIf="createNodeForm.hasError('RangeError')">This range can't generate enough random numbers</mat-error>
-    <button mat-button (click)="onCreateNode()">Create</button>
+    <div>
+      <button mat-raised-button (click)="onCreateNode()">Create</button>
+    </div>
   </mat-expansion-panel>
   <mat-divider></mat-divider>
   <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl"  class="example-tree">
@@ -48,13 +51,13 @@
               {{nestedTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
             </mat-icon>
           </button>
-          <button mat-button (click)="openDialog(node)">{{node.name}}</button>
+          <button mat-button (click)="openDialog(node)" class="node-name">{{node.name}}</button>
           <mat-icon class="icon-button" (click)="openRename(node)">edit</mat-icon>
           <mat-chip-list class="chip">
             <mat-chip color="primary">{{node.lower}} : {{node.higher}}</mat-chip>
           </mat-chip-list>
         </div>
-        <mat-list [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)">
+        <mat-list [class.example-tree-invisible]="!nestedTreeControl.isExpanded(node)" class="children-list">
           <mat-list-item  *ngFor="let child of node.children">{{child}}</mat-list-item>
         </mat-list>
       </li>

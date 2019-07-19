@@ -1,11 +1,12 @@
-<h1 mat-dialog-title>Rename: {{data.name}}</h1>
-<div mat-dialog-content [formGroup]="renameDialog">
+<h2 mat-dialog-title>Rename: {{data.name}}</h2>
+<mat-dialog-content class="mat-typography" [formGroup]="renameDialog">
     <mat-form-field class="example-full-width">
-        <input matInput placeholder="Rename the Node" formControlName="name" required>
+        <input matInput placeholder="Rename the Node" minlength="3"  maxlength="15" formControlName="name" required>
         <mat-error *ngIf="renameDialog.get('name').hasError('required')">Name is required</mat-error>
+        <mat-error *ngIf="renameDialog.get('name').hasError('minlength')">Name should be more than 3 charactor</mat-error>
     </mat-form-field>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="onRename()" cdkFocusInitial>Rename</button>
-</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button (click)="onRename()">Rename</button>
+</mat-dialog-actions>

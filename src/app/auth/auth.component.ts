@@ -15,13 +15,13 @@ export class AuthComponent implements OnInit {
 
   constructor(fb: FormBuilder, private nodeService: NodeService, private router: Router) { 
     this.signUpForm = fb.group({
-      username: new FormControl(null, Validators.required),
+      username: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(15)]),
       email: new FormControl(null, [Validators.required, Validators.email]),
-      password: new FormControl(null, Validators.required)
+      password: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(15)])
     });
     this.logInForm = fb.group({
-      username: new FormControl(null, Validators.required),
-      password: new FormControl(null, Validators.required)
+      username: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(15)]),
+      password: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(15)])
     });
   }
 

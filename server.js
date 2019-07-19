@@ -23,36 +23,39 @@ app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 app.use(express.static(path.join(__dirname, '/dist/tree')));
 
-const schema = Joi.object().keys({
-    id: Joi.string().alphanum(),
-    name: Joi.string(),
+const nodeSchema = Joi.object().keys({
+    id: Joi.string(),
+    name: Joi.string().min(3).max(15),
     count: Joi.number().max(15),
     lower: Joi.number(),
     higher: Joi.number().greater(Joi.ref('lower'))
-})
+});
+
+const userSchema = Joi.object().keys({
+    username: Joi.string().min(3).max(15),
+    email: Joi.string().email(),
+    password: Joi.string().min(3).max(15)
+});
 
 const server = http.createServer(app);
 const io = socketIO(server);
 app.set('io', io);
 
-// socket.io connection
 io.use(function(socket, next){
     if (socket.handshake.query && socket.handshake.query.token){
-        debugger;
         jwt.verify(socket.handshake.query.token, 'user-secret', function(err, decoded) {
         if(err) return next(new Error('Authentication error'));
         socket.decoded = decoded;
         next();
         });
     } else {
-        debugger;
         next(new Error('Authentication error'));
     }    
 })
 .on('connection', (socket) => {
     console.log("Connected to Socket!!"+ socket.id);
     socket.on('addNode', (node) => {
-        Joi.validate(node, schema, function (err, value) {
+        Joi.validate(node, nodeSchema, function (err, value) {
             if(err){
                 console.log(err.message);
             }else{
@@ -61,7 +64,7 @@ io.use(function(socket, next){
         });
     });
     socket.on('renameNode', (node) => {
-        Joi.validate(node, schema, function (err, value) {
+        Joi.validate(node, nodeSchema, function (err, value) {
             if(err){
                 console.log(err.message);
             }else{
@@ -70,8 +73,7 @@ io.use(function(socket, next){
         });
     });
     socket.on('regenerateChild', (node) => {
-        debugger;
-        Joi.validate(node, schema, function (err, value) {
+        Joi.validate(node, nodeSchema, function (err, value) {
             if(err){
                 console.log(err.message);
             }else{
@@ -103,19 +105,24 @@ app.post('/api/signup', (req, res)=>{
         email: req.body.email,
         password: req.body.password
     });
-    newUser.save((err, user) => {
+    Joi.validate(newUser, userSchema, function (err, value) {
         if(err){
-            let str = err.message.split('$')[1].split('_')[0];
-            res.send({error: `${str} already exist, please use a different one`});
+            console.log(err.message);
         }else{
-            var token = jwt.sign({userID: user.id}, 'user-secret', {expiresIn: '2h'});
-            res.send({token});
+            newUser.save((err, user) => {
+                if(err){
+                    let str = err.message.split('$')[1].split('_')[0];
+                    res.send({error: `${str} already exist, please use a different one`});
+                }else{
+                    var token = jwt.sign({userID: user.id}, 'user-secret', {expiresIn: '2h'});
+                    res.send({token});
+                }
+            });
         }
     });
 });
 
 app.post('/api/login', (req, res)=>{
-    debugger;
     User.findOne ({username: req.body.username}).exec((err, user) => {
         if(err){
             res.send({error: err});

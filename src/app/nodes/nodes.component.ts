@@ -32,7 +32,7 @@ export class NodesComponent implements OnInit {
     this.nestedTreeControl = new NestedTreeControl<any>(node => node.children);
     this.nestedDataSource = new MatTreeNestedDataSource();
     this.createNodeForm = fb.group({
-      name: new FormControl(null, Validators.required),
+      name: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(15)]),
       count: new FormControl(null, [Validators.required, Validators.max(15), Validators.min(0)]),
       lower: new FormControl(null, Validators.required),
       higher: new FormControl(null, Validators.required)
@@ -65,7 +65,8 @@ export class NodesComponent implements OnInit {
 
   openDialog(node): void {
     const dialogRef = this.dialog.open(MainDialogComponent, {
-      width: '250px',
+      width: '400px',
+      height: '350px',
       data: {
         id: node._id,
         count: null,
@@ -81,7 +82,8 @@ export class NodesComponent implements OnInit {
 
   openRename(node): void {
     const dialogRef = this.dialog.open(RenameDialogComponent, {
-      width: '250px',
+      height: '250px',
+      width: '400px',
       data: {
         id: node._id,
         name: node.name

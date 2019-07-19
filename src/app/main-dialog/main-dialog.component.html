@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>Edit Tree Node Info</h1>
-<div mat-dialog-content [formGroup]="mainDialog">
+<h2 mat-dialog-title>Regenerate Tree Node</h2>
+<mat-dialog-content class="mat-typography" [formGroup]="mainDialog">
     <mat-form-field class="example-full-width">
         <input type="number" matInput min="0" max="15" formControlName="count" placeholder="Enter Count" required>
         <mat-error *ngIf="mainDialog.get('count').hasError('required')">Count is required</mat-error>
@@ -15,9 +15,9 @@
         <mat-error *ngIf="mainDialog.get('higher').hasError('required')">Upper Bound is required</mat-error>
     </mat-form-field>
     <mat-error *ngIf="mainDialog.hasError('RangeError')">This range can't generate enough random numbers</mat-error>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="onGenerate()" cdkFocusInitial>Generate</button>
-  <button mat-button (click)="onDelete()" cdkFocusInitial>Delete</button>
-</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-raised-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button (click)="onGenerate()">Generate</button>
+  <button mat-raised-button color="warn" (click)="onDelete()">Delete</button>
+</mat-dialog-actions>

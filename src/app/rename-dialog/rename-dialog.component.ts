@@ -26,7 +26,7 @@ export class RenameDialogComponent implements OnInit {
       this.socket = io({query: {token: localStorage.getItem('access_token')}});
       this.renameDialog = fb.group({
         id: data.id,
-        name: new FormControl(null, Validators.required)
+        name: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(15)])
       });
     }
 
