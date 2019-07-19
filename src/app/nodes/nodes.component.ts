@@ -28,7 +28,7 @@ export class NodesComponent implements OnInit {
   @ViewChild(MatExpansionPanel) matExpansionPanel: MatExpansionPanel;
 
   constructor(private nodeService: NodeService, public dialog: MatDialog, private fb: FormBuilder, private router: Router) { 
-    this.socket = io();
+    this.socket = io({query: {token: localStorage.getItem('access_token')}});
     this.nestedTreeControl = new NestedTreeControl<any>(node => node.children);
     this.nestedDataSource = new MatTreeNestedDataSource();
     this.createNodeForm = fb.group({
@@ -101,6 +101,9 @@ export class NodesComponent implements OnInit {
   }
 
   logOut(){
+    localStorage.removeItem('access_token');
+    this.socket.emit('end');
+    this.socket.disconnect();
     this.router.navigate(['']);
   }
 

@@ -9,6 +9,9 @@
       <!-- Todo: Email Validation -->
       <mat-form-field class="example-full-width">
         <input matInput placeholder="Email" formControlName="email" required>
+        <mat-error *ngIf="signUpForm.get('email').hasError('email') && !signUpForm.get('email').hasError('required')">
+          Please enter a valid email address
+        </mat-error>
         <mat-error *ngIf="signUpForm.get('email').hasError('required')">Email is required</mat-error>
       </mat-form-field>
     

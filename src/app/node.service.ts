@@ -7,6 +7,7 @@ import { Node } from './models/node';
   providedIn: 'root'
 })
 export class NodeService {
+  authToken;
 
   constructor(private http: HttpClient) { }
 
@@ -19,7 +20,10 @@ export class NodeService {
   }
 
   getNodes(): Observable<Node[]>{
-    return this.http.get<Node[]>('/api/nodes');
+    this.authToken = localStorage.getItem('access_token');
+    return this.http.get<Node[]>('/api/nodes', {
+      headers: new HttpHeaders().set('Authorization', this.authToken),
+    });
   }
 
   addNode(newNode, socket): void{

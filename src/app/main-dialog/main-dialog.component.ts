@@ -29,7 +29,7 @@ export class MainDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private fb: FormBuilder, 
     private nodeService: NodeService) {
-      this.socket = io();
+      this.socket = io({query: {token: localStorage.getItem('access_token')}});
       this.mainDialog = fb.group({
         id: data.id,
         count: new FormControl(null, [Validators.required, Validators.max(15), Validators.min(0)]),

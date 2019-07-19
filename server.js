@@ -36,7 +36,20 @@ const io = socketIO(server);
 app.set('io', io);
 
 // socket.io connection
-io.on('connection', (socket) => {
+io.use(function(socket, next){
+    if (socket.handshake.query && socket.handshake.query.token){
+        debugger;
+        jwt.verify(socket.handshake.query.token, 'user-secret', function(err, decoded) {
+        if(err) return next(new Error('Authentication error'));
+        socket.decoded = decoded;
+        next();
+        });
+    } else {
+        debugger;
+        next(new Error('Authentication error'));
+    }    
+})
+.on('connection', (socket) => {
     console.log("Connected to Socket!!"+ socket.id);
     socket.on('addNode', (node) => {
         Joi.validate(node, schema, function (err, value) {
@@ -73,7 +86,10 @@ io.on('connection', (socket) => {
             nodeController.deleteNode(io,id);
         }
     });
-});
+    socket.on('end', function (){
+        socket.disconnect();
+    });
+}, {'sync disconnect on unload': true});
 
 app.get('/api/nodes', (req, res)=>{
     Node.find({}).then((nodes) => {
@@ -90,9 +106,10 @@ app.post('/api/signup', (req, res)=>{
     newUser.save((err, user) => {
         if(err){
             let str = err.message.split('$')[1].split('_')[0];
-            res.status(401).send({error: `${str} already exist, please use a different one`});
+            res.send({error: `${str} already exist, please use a different one`});
         }else{
-            res.send(user);
+            var token = jwt.sign({userID: user.id}, 'user-secret', {expiresIn: '2h'});
+            res.send({token});
         }
     });
 });
@@ -104,22 +121,16 @@ app.post('/api/login', (req, res)=>{
             res.send({error: err});
         }
         if(!user){
-            res.status(401).send({error: "Username not found"});
+            res.send({error: "Username not found"});
         }else{
             if(user.password !== req.body.password){
-                res.status(401).send({error: "Password is incorrect"});
+                res.send({error: "Password is incorrect"});
             }else{
                 var token = jwt.sign({userID: user.id}, 'user-secret', {expiresIn: '2h'});
                 res.send({token});
             }
         }
     });
-});
-
-app.get('/api/users', (req, res)=>{
-    User.find({}).then((users) => {
-        res.status(200).send(users);
-    })
 });
 
 server.listen(port);

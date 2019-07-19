@@ -22,7 +22,11 @@ const appRoutes:Routes = [
     path: 'nodes',
     component: NodesComponent
   }
-]
+];
+
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
 
 @NgModule({
   declarations: [
@@ -41,6 +45,13 @@ const appRoutes:Routes = [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        whitelistedDomains: ['localhost:3000', 'tree-tina.herokuapp.com'],
+        blacklistedRoutes: ['localhost:3000/api/signUp', 'localhost:3000/api/logIn', 'tree-tina.herokuapp.com/api/signUp', 'tree-tina.herokuapp.com/api/logIn']
+      }
+    }),
     ReactiveFormsModule,
     HttpClientModule,
     MatTreeModule,

@@ -16,7 +16,7 @@ export class AuthComponent implements OnInit {
   constructor(fb: FormBuilder, private nodeService: NodeService, private router: Router) { 
     this.signUpForm = fb.group({
       username: new FormControl(null, Validators.required),
-      email: new FormControl(null, Validators.required),
+      email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, Validators.required)
     });
     this.logInForm = fb.group({
@@ -33,6 +33,7 @@ export class AuthComponent implements OnInit {
       if(data.error){
         this.customError.signUp = data.error;
       }else{
+        localStorage.setItem('access_token', data.token);
         this.router.navigate(['nodes']);
       }
     });
@@ -43,6 +44,7 @@ export class AuthComponent implements OnInit {
       if(data.error){
         this.customError.logIn = data.error;
       }else{
+        localStorage.setItem('access_token', data.token);
         this.router.navigate(['nodes']);
       }
     });
