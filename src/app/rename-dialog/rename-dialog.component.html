@@ -3,6 +3,7 @@
     <mat-form-field class="example-full-width">
         <input matInput placeholder="Rename the Node" minlength="3"  maxlength="15" formControlName="name" required>
         <mat-error *ngIf="renameDialog.get('name').hasError('required')">Name is required</mat-error>
+        <mat-error *ngIf="signUpForm.get('username').hasError('pattern')">Only alphanumeric allowed</mat-error>
         <mat-error *ngIf="renameDialog.get('name').hasError('minlength')">Name should be more than 3 characters</mat-error>
     </mat-form-field>
 </mat-dialog-content>
