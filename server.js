@@ -31,12 +31,6 @@ const nodeSchema = Joi.object().keys({
     higher: Joi.number().greater(Joi.ref('lower'))
 });
 
-const userSchema = Joi.object().keys({
-    username: Joi.string().min(3).max(15),
-    email: Joi.string().email(),
-    password: Joi.string().min(3).max(15)
-});
-
 const server = http.createServer(app);
 const io = socketIO(server);
 app.set('io', io);
@@ -105,19 +99,13 @@ app.post('/api/signup', (req, res)=>{
         email: req.body.email,
         password: req.body.password
     });
-    Joi.validate(newUser, userSchema, function (err, value) {
+    newUser.save((err, user) => {
         if(err){
-            console.log(err.message);
+            let str = err.message.split('$')[1].split('_')[0];
+            res.send({error: `${str} already exist, please use a different one`});
         }else{
-            newUser.save((err, user) => {
-                if(err){
-                    let str = err.message.split('$')[1].split('_')[0];
-                    res.send({error: `${str} already exist, please use a different one`});
-                }else{
-                    var token = jwt.sign({userID: user.id}, 'user-secret', {expiresIn: '2h'});
-                    res.send({token});
-                }
-            });
+            var token = jwt.sign({userID: user.id}, 'user-secret', {expiresIn: '2h'});
+            res.send({token});
         }
     });
 });
