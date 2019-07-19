@@ -1,27 +1,18 @@
 # Tree
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.6.
+## Description
 
-## Development server
+MEAN stack + socket.io + JWT application with real time data visualization, also including input validation(UI&Server) and Authentication/Autherization.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Deployed to Heruko: [Tree](https://tree-tina.herokuapp.com/)
 
-## Code scaffolding
+## User Journey
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+1. User can either Sign Up or Log In to the application, and token will be assigned and stored in the local storage;(username and email should be unique)
+2. After successful log in, user can either create new node or view list of nodes and modify them;
+3. Create a node required name, count, lower and higher bound with constrains;
+4. User can toggle the icon next to the node name to view node children;
+5. User can click on the node name to regenerate children by providing required information or delete the node;
+6. User can rename the node by click on the edit icon;
+7. All data modification actions will real time reflect on the other logged in user's screen without refresh or polling;
+8. User can then log out and return back to the log in screen, and token will be removed after the log out.
